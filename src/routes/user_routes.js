@@ -5,8 +5,8 @@ user_router.get("/", (req, res, next) => {
     res.send("Usuarios");
 });
 
-user_router.get("/:id", (req, res, next)=> {
-    const {params} = req;
+user_router.get("/:id", (req, res, next) => {
+    const { params } = req;
     res.send('Ver un usuario');
 });
 
