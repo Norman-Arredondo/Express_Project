@@ -6,6 +6,7 @@ import {} from "dotenv/config"
 import user_router from "./src/routes/user_routes.js";
 import api_user_router from "./src/routes/api_user_routes.js";
 import db from "./src/config/db.js";
+import session from "express-session";
 
 
 
@@ -18,6 +19,12 @@ app.use(express.static('./src/public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); //Enviar diferentes respuetsas de tipo json - ayuda a responder en formato json
 
+//configurar sesion de los usuarios
+app.use(session ({
+    secret: "mpmsdfiwefmpsdfa", //Token de seguridad
+    resave: false, //Sesión pueda modificarse en la ejecución del programa
+    saveUnitialized: false //No guardar sesiones si el usuario no se autenticó
+}));
 
 //Habilitar ejs
 app.set('view engine', 'ejs'); //Establecemos que vamos a usar EJS
