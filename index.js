@@ -50,7 +50,10 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/login", (req, res, next) => {
-    res.send('Login...');
+    res.render('login', {
+        base_url: process.env.BASE_URL
+    });
+
 
 });
 

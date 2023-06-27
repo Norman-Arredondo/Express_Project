@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="<%= base_url %>css/login.css"">
+</head>
+<body>
+    <div class="content" id="contenido">
+    <h1 class="titulo">Login</h1>
+    <form action="" id="formulario">
+        <div class="labelUser">
+            <label for="">Usuario:</label>
+            <input type="email" name="" id="input_email" placeholder="User_email">
+        </div>
+        <div class="labelPass">
+            <label for="">Contraseña: </label>
+            <input type="text" name="" id="input_password" placeholder="User_password">
+        </div>
+        <button type="submit" class="btnIngresar">Ingresar</button>
+
+    </form>
+    </div>
+
+    <script>
+        //Variblaes 
+        const formulario = document.querySelector('#formulario');
+        const input_email = document.querySelector('#input_email');
+        const password = document.querySelector('#input_password');
+
+        let u_email = [];
+        let u_password = [];
+
+
+        //Event Listeners 
+        eventListeners()
+
+        function eventListeners() {
+            formulario.addEventListener('submit', agregarDatos);
+            
+
+        }
+
+
+        //Funciones
+        function agregarDatos(e) {
+            e.preventDefault();
+
+            //Label donde el usuario escribe
+            const email = document.querySelector('#input_email').value;
+            const password = document.querySelector('#input_password').value;
+            const er = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+            //Validación
+            if(email === '' || password==='' ) {
+                
+                mostrarError('Todos los campos son obligatorios');
+
+                return;
+            }
+
+            //Añadir al arreglo
+            u_email = [...u_email, email];
+            u_password = [...u_password, password];
+            console.log(u_email);
+            console.log(u_password);
+            console.log('Agregando datos')
+            
+        }
+
+        function mostrarError(error) {
+            const mensajeError = document.createElement('p');
+            mensajeError.textContent = error;
+            mensajeError.classList.add('error');
+            
+            //Definir dónde va a salir el mensaje
+
+            //Insertarlo
+            const contenido = document.querySelector('#contenido');
+            contenido.appendChild(mensajeError);
+
+            setTimeout(() => {
+                mensajeError.remove();
+            }, 2000);
+        }
+
+
+
+
+
+    </script>
+
+    </body>
+
+</html>

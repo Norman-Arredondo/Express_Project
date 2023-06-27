@@ -100,7 +100,7 @@ export const login = async (req, res, next) => {
     }
 }
 
-export const verify_token = () => {
+export const verify_token = (req, res, next) => {
     const {verify} = jwt;
     const token = req.header('auth-token');
     if(!token) {
@@ -109,7 +109,7 @@ export const verify_token = () => {
     }
     try {
         const verified = verify(token, process.env.TOKEN_SECRET);
-        req.user = verified; 
+        req.user = verified;
         next();
     }catch (error) {
         res.status(400).send('Token invalido');
