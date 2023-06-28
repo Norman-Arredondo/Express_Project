@@ -39,7 +39,6 @@ app.use("/api/user", api_user_router);
 
 
 
-
 app.get("/", (req, res, next) => {
     const frutas= ["manzana", "melon", "platano"];
     res.render('index', {
@@ -53,8 +52,12 @@ app.get("/login", (req, res, next) => {
     res.render('login', {
         base_url: process.env.BASE_URL
     });
+});
 
-
+app.get("/dashboard", (req, res, next) => {
+    res.render('dashboard', {
+        base_url: process.env.BASE_URL
+    });
 });
 
 db.authenticate()
