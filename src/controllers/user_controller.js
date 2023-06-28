@@ -64,13 +64,13 @@ export const login = async (req, res, next) => {
         // Verificar si el usuario existe
         const user = await User.findOne({where:{user_email:body.user_email}});
         if(!user){
-            res.status(400).send({error:"El usuario no existe en la base de datos"})
+            res.status(400).json({error:"El usuario no existe en la base de datos"})
             return;
         }
         // Verificar que la contraseña sea correcta
         const match = await bcrypt.compare(body.user_password, user.user_password);
         if(!match){
-            res.status(400).send({error:"La contraseña es incorrecta"})
+            res.status(400).json({error:"La contraseña es incorrecta"})
             return;
         }
         // Se crea el token de seguridad
@@ -98,7 +98,7 @@ export const login = async (req, res, next) => {
 export const verify_token = (req, res, next) => {
     const { verify } = jwt;
     const token = req.header("auth-token")
-    if(!token){
+    if (!token) {
         res.status(400).send("Acceso denegado");
         next();
     }
