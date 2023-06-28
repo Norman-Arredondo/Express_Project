@@ -52,48 +52,43 @@ export const new_user = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
     try {
-        res.send('login');
+        
+        // Validar errores con express-validator
+        const errores = validationResult(req);
+        if(!errores.isEmpty()){
+            res.status(400).json({errores: errores.array()})
+            return;
+        }
+        const {body} = req;
 
         // Verificar si el usuario existe
-        const errores = validationResult(req);
-        if (!errores.isEmpty()) {
-            res.status(400).json({ errores: errores.array() })
+        const user = await User.findOne({where:{user_email:body.user_email}});
+        if(!user){
+            res.status(400).send({error:"El usuario no existe en la base de datos"})
             return;
         }
-        const { body } = req;
-
-        //Verificar si el usuario existe
-        const user = await User.finOne({ where: { user_email: body.user_email } });
-        if (!user) {
-            res.status(400).send({ error: 'El usuario no existe en la base de datos' })
+        // Verificar que la contraseña sea correcta
+        const match = await bcrypt.compare(body.user_password, user.user_password);
+        if(!match){
+            res.status(400).send({error:"La contraseña es incorrecta"})
             return;
         }
-
-        //Verificar que la contraseña sea correcta
-        const match = await bycrypt.compare(body.user_password, user_password);
-        if (!match) {
-            res.status(400).send({ error: 'Contraseña incorrecta' })
-            return;
-        }
-
-        //Pay load
-        //Se crea el token de seguridad
+        // Se crea el token de seguridad
+        // Payload
         const payload = {user_id: user.user_id}
-        const {sign} = jwt;
-        const token = sign(payload, process.env.TOKEN_SECRET, {expiresIn: (60000*30)});
-        console.log("token::::", token)
+        const {sign} = jwt;        
+        const token = sign(payload, process.env.TOKEN_SECRET, {expiresIn: (60000*30)})
+        console.log("token::::", token);
         
-       
-        //Se crea la sesión del usuario
+        // Se crea la sesión del usuario
         req.session.user_id = user.user_id;
         req.session.loged = true;
 
-        res.session.loged = true;
-        res.header('auth-token', token).json({
-            token: token,
+        // Se genera respuesta con el token de seguridad en el header
+        res.header("auth-token", token).json({
+            token:token,
             user_id: user.user_id
         });
-        res.send('login');
     } catch (error) {
         res.status(400).send(error);
         next();
@@ -101,18 +96,18 @@ export const login = async (req, res, next) => {
 }
 
 export const verify_token = (req, res, next) => {
-    const {verify} = jwt;
-    const token = req.header('auth-token');
-    if(!token) {
-        res.user_status(400).send('Acceso denegado');
-        return;
+    const { verify } = jwt;
+    const token = req.header("auth-token")
+    if(!token){
+        res.status(400).send("Acceso denegado");
+        next();
     }
     try {
-        const verified = verify(token, process.env.TOKEN_SECRET);
+        const verified = verify(token, process.env.TOKEN_SECRECT);
         req.user = verified;
         next();
-    }catch (error) {
-        res.status(400).send('Token invalido');
+    } catch (error) {
+        res.status(400).send("Token invalido");
         next();
     }
 }
