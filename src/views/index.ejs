@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
+    <link rel=" stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="<%= base_url %>css/index.css">
 </head>
+
 <body>
-    Raiz del proyecto pero con HTML
-    <%= base_url %>
+    <nav class="navbar is-light">
+        <div class="navbar-brand">
+            <a class="navbar-item">
+                <img src="../img/node.png" width="90" height="28">
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="./">
+                    Home
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Views
+                    </a>
+                    <div class="navbar-dropdown is-boxed">
+                        <!--
+                <a class="navbar-item" href="">
+                Overview
+                </a>
+                <hr class="navbar-divider">
+                -->
+                        <a class="navbar-item" href="./dashboard">
+                            Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <% frutas.forEach(fruta => { %>
-            <% if (fruta === "manzana"){ %>
-                <p style="font-weight: bold;"><%= fruta %></p>
-            <% }else{ %>
-                <p><%= fruta %></p>
-            <% } %>
-    
-          <% }); %>
+    <div class="hero is-fullheight">
+    <div class=" mt-6 ml-6">
+
+        Raiz del proyecto pero con HTML
+        <%= base_url %>
+
+            <% frutas.forEach(fruta=> { %>
+                <% if (fruta==="manzana" ){ %>
+                    <p style="font-weight: bold;">
+                        <%= fruta %>
+                    </p>
+                    <% }else{ %>
+                        <p>
+                            <%= fruta %>
+                        </p>
+                        <% } %>
+
+                            <% }); %>
+
+    </div>
+    </div>
 
 
 
 
-    
 
 
 </body>
+
 </html>
