@@ -3,8 +3,29 @@ import bcrypt from "bcrypt";
 import moment from "moment/moment.js";
 import jwt from "jsonwebtoken";
 import {} from "dotenv/config"; //variables de entorno
-
 import { User } from "../models/user_model.js";
+
+export const users_view = async (req, res, next) => {
+    try {
+
+        console.log("=======================");
+        const users = await User.findAll();
+
+        res.render("users", {
+            base_url: process.env.BASE_URL,
+            users: users
+        })
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+export const prueba_view = async(req, res, next) => {
+    res.render('prueba', {
+        base_url: process.env.BASE_URL,
+    })
+}
 
 export const new_user = async (req, res, next) => {
     try {
@@ -95,6 +116,7 @@ export const login = async (req, res, next) => {
     }
 }
 
+//Proteger las rutas que son parte de la API
 export const verify_token = (req, res, next) => {
     const { verify } = jwt;
     const token = req.header("auth-token")
