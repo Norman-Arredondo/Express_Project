@@ -38,7 +38,6 @@
             </div>
 
 -->
-            
 
             <div class="hero is-fullheight ">
                 <article class="panel is-link mt-6 ml-6 mr-6">
@@ -70,8 +69,9 @@
                         </p>
                         
                     </div>
-                    <div id="lista-usuarios" class="panel-block ">
+                    <div id="lista-usuarios" class=" ">
                         <%users.forEach(user=> { %>
+                        <div class="panel-block">
                         <p class="control px-2">
                             <%=user.user_id %>
                         </p>
@@ -85,7 +85,7 @@
                             <button class="button is-small is-responsive is-warning is-outlined mr-2">Editar</button>
                             <button class="button is-small is-responsive is-danger is-outlined ml-2">Eliminar</button>
                         </p>
-                        
+                    </div>
                         <% });%>
                     </div>
 
