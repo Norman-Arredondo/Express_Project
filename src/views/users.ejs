@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("templates/header") %>
+
+    <body>
+        <%- include("templates/navbar") %>
+
+<!--
+<div class="table-container">
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th><abbr title="Position">ID</abbr></th>
+                            <th>NOMBRE</th>
+                            <th>Email</th>
+                            <th><abbr title="Played"> #</abbr></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%users.forEach(user=> { %>
+                            <tr>
+                                <th>
+                                    <%=user.user_id %>
+                                </th>
+                                <td>
+                                    <%=user.user_name %>
+                                </td>
+                                <td>
+                                    <%=user.user_email %>
+                                </td>
+                                <td>Editar / registrar</td>
+                            </tr>
+                            <% });%>
+                    </tbody>
+
+                </table>
+            </div>
+
+-->
+            
+
+            <div class="hero is-fullheight ">
+                <article class="panel is-link mt-6 ml-6 mr-6">
+                    <p class="panel-heading">
+                        Usuarios Registrados
+                    </p>
+
+                    <!--Búsqueda-->
+                    <div class="panel-block">
+                        <p class="control has-icons-left">
+                            <input class="input is-link" type="text" placeholder="Search">
+                            <span class="icon is-left">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="panel-block has-text-weight-bold ">
+                        <p class="control px-2">
+                            ID
+                        </p>
+                        <p class="control px-2">
+                            Nombre
+                        </p>
+                        <p class="control px-2">
+                            Email
+                        </p>
+                        <p class="control px-2">
+                            Editar / Eliminar
+                        </p>
+                        
+                    </div>
+                    <div id="lista-usuarios" class="panel-block ">
+                        <%users.forEach(user=> { %>
+                        <p class="control px-2">
+                            <%=user.user_id %>
+                        </p>
+                        <p class="control px-2">
+                            <%=user.user_name %>
+                        </p>
+                        <p class="control px-2">
+                            <%=user.user_email %>
+                        </p>
+                        <p class="control px-2">
+                            <button class="button is-small is-responsive is-warning is-outlined mr-2">Editar</button>
+                            <button class="button is-small is-responsive is-danger is-outlined ml-2">Eliminar</button>
+                        </p>
+                        
+                        <% });%>
+                    </div>
+
+                </article>
+
+                <p class="panel">Hola</p>
+
+            </div>
+
+
+
+
+
+    </body>
+    <script src="<%= base_url %>../js/dashboard.js"></script>
+
+</html>
