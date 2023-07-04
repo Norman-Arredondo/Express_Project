@@ -1,12 +1,12 @@
 import express from "express";
 import cors from "cors";
 import {} from "dotenv/config"
-
+import session from "express-session";
 
 import user_router from "./src/routes/user_routes.js";
 import api_user_router from "./src/routes/api_user_routes.js";
 import db from "./src/config/db.js";
-import session from "express-session";
+import { session_validation } from "./src/validators/session_validation.js";
 
 
 
@@ -39,13 +39,10 @@ app.use("/api/user", api_user_router);
 
 
 
-app.get("/", (req, res, next) => {
-    const frutas= ["manzana", "melon", "platano"];
+app.get("/",session_validation, (req, res, next) => {
     res.render('index', {
         base_url: process.env.BASE_URL,
-        frutas: frutas //Pasamos el arreglo a la vista
     });
-
 });
 
 app.get("/login", (req, res, next) => {
@@ -54,11 +51,6 @@ app.get("/login", (req, res, next) => {
     });
 });
 
-app.get("/dashboard", (req, res, next) => {
-    res.render('dashboard', {
-        base_url: process.env.BASE_URL
-    });
-});
 
 db.authenticate()
     .then(() => {console.log("Base de datos conectada");})
