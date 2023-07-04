@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include("templates/header") %>
-<body>
-    <!--
+
+    <body>
+        <!--
          <section class="hero is-link is-fullheight">
         <div class="hero-body">
 
@@ -33,66 +34,70 @@
         </div>
     </section>
     -->
+        <section class="hero is-link is-fullheight">
+            <div class="hero-body">
+                <div class="container">
+                    <div class="columns is-vcentered">
+                        <div class="column is-4 is-offset-4 mt-6">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div class="columns is-centered">
+                                            <p class="title is-3" style="color:hsl(0, 0%, 14%)">Login</p>
+                                        </div>
+                                        <div class="columns is-centered">
+                                            <figure class="image is-128x128 mt-4">
+                                                <img class="is-rounded"
+                                                    src="../img/login.avif">
+                                            </figure>
+                                        </div>
 
-    <div class="container">
-        <div class="columns is-vcentered">
-            <div class="column is-4 is-offset-4 mt-6">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="content">
-                            
-                            <h2>Login</h2> 
-                            <div class="field">
-                                <label class="label">Email</label>
-                                <div class="control has-icons-left has-icons-right">
-                                    <input class="input" type="email" placeholder="Email input" id="email_input">
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-                                    <span class="icon is-small is-right">
-                                        <i class="fas fa-exclamation-triangle" id="iconExclamation"></i>
-                                    </span>
-                                </div>
-                                <p class="help is-danger" id="mensaje_correo"></p>
-                            </div>
-                            <div class="field">
-                                <label class="label">Password</label>
-                                <div class="control has-icons-left has-icons-right">
-                                    <input class="input" type="password" id="password_input">
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-user" id="iconGood"></i>
-                                    </span>
-                                    <span class="icon is-small is-right">
-                                        <i class="fas fa-check"></i>
-                                    </span>
-                                </div>
-                                <p class="help is-danger" id="mensaje_password"></p>
-                            </div>
-                            <div class="field">
-                                <div class="control">
-                                    <label class="checkbox">
-                                    <input type="checkbox" id="show_password_cb">
-                                        Ver contraseña
-                                    </label>
-                                </div>
-                            </div>                           
-                              
-                            <div class="field is-grouped">
-                                <div class="control">
-                                    <button class="button is-link" id="send_btn">Enviar</button>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-link is-light">Cancelar</button>
+                                        <div class="field">
+                                            <label class="label">Email</label>
+                                            <div class="control has-icons-left has-icons-right">
+                                                <input class="input" type="email" placeholder="Email"
+                                                    id="email_input">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                
+                                            </div>
+                                            <p class="help is-danger" id="mensaje_correo"></p>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label">Password</label>
+                                            <div class="control has-icons-left has-icons-right">
+                                                <input class="input" type="password" id="password_input" placeholder="****">
+                                                <span class="icon is-small is-left">
+                                                    <i class="fas fa-user" id="iconGood"></i>
+                                                </span>
+                                                
+                                            </div>
+                                            <p class="help is-danger" id="mensaje_password"></p>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="show_password_cb">
+                                                    Ver contraseña
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns is-mobile">
+                                            <div class="column is-offset-8">
+                                                <button class="button is-link " id="send_btn">Acceder</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-   
+        </section>
 
-</body>
-<script src="<%= base_url %>../js/login.js"></script>
+    </body>
+    <script src="<%= base_url %>../js/login.js"></script>
+
 </html>
