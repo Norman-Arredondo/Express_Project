@@ -3,7 +3,7 @@ import cors from "cors";
 import {} from "dotenv/config"
 import session from "express-session";
 
-import user_router from "./src/routes/user_routes.js";
+import user_routes from "./src/routes/user_routes.js";
 import api_user_router from "./src/routes/api_user_routes.js";
 import db from "./src/config/db.js";
 import { session_validation } from "./src/validators/session_validation.js";
@@ -34,7 +34,7 @@ const port = process.env.PORT || 3000;
 const base_url = process.env.BASE_URL || "http://localhost:3000";
 
 
-app.use("/user", user_router);
+app.use("/users", user_routes);
 app.use("/api/user", api_user_router);
 
 

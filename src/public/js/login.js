@@ -21,54 +21,6 @@ const show_password = (e) => {
     }
 } 
 
-/*
-const enviar = async (e) => {
-    try {
-        e.preventDefault();
-        if(
-            email_input.value.trim() === "" ||
-            password_input.value.trim() === ""
-        ){
-            mensaje_password.innerText = "Los campos son obligatorios"
-            mensaje_password.classList.add("has-text-weight-bold")
-            setTimeout(() => {
-                mensaje_password.classList.remove("has-text-weight-bold")
-            }, 1000);
-            return;
-        }
-
-        const data = {
-            user_email: email_input.value,
-            user_password: password_input.value
-        }
-
-        const response = await fetch("http://localhost:3001/api/user/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
-            body: new URLSearchParams(data)
-        })
-
-        const result = await response.json();
-
-        const {error} = result;
-        if(error){
-            mensaje_password.innerText = error;
-            mensaje_password.classList.add("has-text-weight-bold")
-            setTimeout(() => {
-                mensaje_password.classList.remove("has-text-weight-bold")
-            }, 1000);
-            return;
-        }else{
-            mensaje_password.innerText = "";
-        }
-    } catch (error) {
-        console.log(error);
-    }
-} 
-*/
-
 const enviar = async(e) => {
     try {
         e.preventDefault();
