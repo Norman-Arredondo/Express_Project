@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("templates/header") %>
+
+    <body>
+
+        <div class="has-text-centered my-6">
+            <p class="is-size-1">Express <span class="has-text-weight-bold">Server</span></p>
+            <p class="is-size-3 has-text-weight-bold">Registrar Usuario</p>
+        </div>
+
+        <div class="columns is-centered mt-5">
+            <div class="column is-one-third has-background-white py-4 px-4 box is-rounded"
+                style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                <form action="" class="colum is-centered">
+                    <div class="mb-3">
+                        <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
+                            Nombre</label>
+                        <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
+                            Email</label>
+                        <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
+                            Contraseña</label>
+                        <input type="password" class="input is-fullwidth has-padding-small mt-1" placeholder="******">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
+                            Repetir Contraseña</label>
+                        <input type="password" class="input is-fullwidth has-padding-small mt-1" placeholder="******">
+                    </div>
+                    <div class="field is-grouped is-grouped-right mt-5">
+                        <div class="control">
+                            <button class="button is-danger is-outlined">Cancelar</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-link is-outlined">Registrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    <script src="<%= base_url %>"></script>
+
+</html>
