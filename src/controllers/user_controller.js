@@ -21,8 +21,12 @@ export const users_view = async (req, res, next) => {
     }
 }
 
-export const prueba_view = async(req, res, next) => {
-    res.render('prueba', {
+export const registrar = (req, res, next) => {
+
+}
+
+export const registro_view = async(req, res, next) => {
+    res.render('registro', {
         base_url: process.env.BASE_URL,
     })
 }

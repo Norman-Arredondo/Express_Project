@@ -1,31 +1,61 @@
-
-<nav class="navbar is-dark">
-    <div class="navbar-brand">
-        <a class="navbar-item">
-            <img src="../img/node.png" width="90" height="28">
-        </a>
-    </div>
-    <div class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item" href="/">
-                Home
-            </a>
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    Views
-                </a>
-                <div class="navbar-dropdown is-boxed">
-                    
-            <a class="navbar-item" href="/user/users">
-                Dashboard
-            </a>
-            <a class="navbar-item" href="/user/prueba">
-                Prueba
-            </a>
+<section>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <div class="navbar-item" href="#">
+                <img src="../img/node.png" width="90" height="28">
+            </div>
+            <button class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
         </div>
-    </div>
-</div>
-</div>
-</nav>
 
+        <div id="navbarMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/">
+                    Home
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Views
+                    </a>
+                    <div class="navbar-dropdown is-boxed">
 
+                        <a class="navbar-item" href="/users/users">
+                            Dashboard
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="/users/registro">
+                            Crear cuenta
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" href="#">
+                        Usuario
+                    </a>
+                    <div class="navbar-dropdown is-right">
+                        <a class="navbar-item" href="#">Configuración</a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="#">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obtener el botón hamburguesa y el menú
+            const navbarBurger = document.querySelector('.navbar-burger');
+            const navbarMenu = document.getElementById('navbarMenu');
+
+            // Activar la funcionalidad del menú hamburguesa al hacer clic
+            navbarBurger.addEventListener('click', () => {
+                navbarBurger.classList.toggle('is-active');
+                navbarMenu.classList.toggle('is-active');
+            });
+        });
+    </script>

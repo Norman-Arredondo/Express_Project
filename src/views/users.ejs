@@ -6,7 +6,7 @@
     <body>
         <%- include("templates/navbar") %>
 
-<!--
+            <!--
 <div class="table-container">
                 <table class="table is-fullwidth">
                     <thead>
@@ -67,26 +67,26 @@
                         <p class="control px-2">
                             Editar / Eliminar
                         </p>
-                        
+
                     </div>
                     <div id="lista-usuarios" class=" ">
                         <%users.forEach(user=> { %>
-                        <div class="panel-block">
-                        <p class="control px-2">
-                            <%=user.user_id %>
-                        </p>
-                        <p class="control px-2">
-                            <%=user.user_name %>
-                        </p>
-                        <p class="control px-2">
-                            <%=user.user_email %>
-                        </p>
-                        <p class="control px-2">
-                            <button class="button is-small is-responsive is-warning is-outlined mr-2">Editar</button>
-                            <button class="button is-small is-responsive is-danger is-outlined ml-2">Eliminar</button>
-                        </p>
-                    </div>
-                        <% });%>
+                            <div class="panel-block">
+                                <p class="control px-2">
+                                    <%=user.user_id %>
+                                </p>
+                                <p class="control px-2">
+                                    <%=user.user_name %>
+                                </p>
+                                <p class="control px-2">
+                                    <%=user.user_email %>
+                                </p>
+                                <p class="control px-2">
+                                    <button class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt"></button>
+                                    <button class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt"></button>
+                                </p>
+                            </div>
+                            <% });%>
                     </div>
 
                 </article>

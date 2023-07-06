@@ -16,7 +16,7 @@ app.use(cors());
 //Carpeta Pública
 app.use(express.static('./src/public'));
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true})); //Habilitar lectura de datos de formularios
 app.use(express.json()); //Enviar diferentes respuetsas de tipo json - ayuda a responder en formato json
 
 //configurar sesion de los usuarios
