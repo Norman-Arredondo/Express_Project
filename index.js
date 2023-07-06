@@ -19,6 +19,15 @@ app.use(express.static('./src/public'));
 app.use(express.urlencoded({extended: true})); //Habilitar lectura de datos de formularios
 app.use(express.json()); //Enviar diferentes respuetsas de tipo json - ayuda a responder en formato json
 
+//Conexión a la Base de Datos
+try{
+    await db.authenticate();
+    db.sync(); //Crea la tabla en caso que no está creada
+    console.log('Conexión correcta a la BD')
+} catch(error) {
+    console.log(error)
+}
+
 //configurar sesion de los usuarios
 app.use(session ({
     secret: "mpmsdfiwefmpsdfa", //Token de seguridad
@@ -52,10 +61,11 @@ app.get("/login", (req, res, next) => {
 });
 
 
+/*
 db.authenticate()
     .then(() => {console.log("Base de datos conectada");})
     .catch(error => {console.log(error);})
-
+*/
 app.listen(port, () => {
     console.log(` Servidor activo en el puerto ${port}`);
     console.log(` Ruta del servidor ${base_url}`);

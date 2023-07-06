@@ -1,4 +1,4 @@
-import { validationResult } from "express-validator";
+import { check, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import moment from "moment/moment.js";
 import jwt from "jsonwebtoken";
@@ -21,14 +21,61 @@ export const users_view = async (req, res, next) => {
     }
 }
 
-export const registrar = (req, res, next) => {
-
-}
-
 export const registro_view = async(req, res, next) => {
     res.render('registro', {
         base_url: process.env.BASE_URL,
     })
+}
+
+export const registrar = async (req, res, next) => {
+    //req es lo que enviamos al servidor
+
+    console.log(req.body)
+    //const usuario = await User.create(req.body)
+    //res.json(usuario)
+    /*//Validación
+    await check('registro_nombre').notEmpty().withMessage('El campo nombre no puede ir vacío').run(req);
+    await check('registro_email').isEmail().withMessage('Ingresa un Email válido').run(req);
+    await check('registro_password').isLength({min: 6, max: 6}).withMessage('La contraseña debe de ser de exactamente 6 caracteres').run(req);
+    await check('registro_repetir-password').equals(req.body.password).withMessage('Las contraseñas deben de ser iguales').run(req);
+
+    let resultado = validationResult(req); //Guarda el resultado de la validación
+
+    res.json(resultado.array());
+
+    /*
+    //Verificar que el resultado este vacío
+    if(!resultado.isEmpty()) {
+        //Hay errores
+        return res.render('registro' , {
+            errores: resultado.array(),
+            usuario: {
+                nombre: req.body.registro_nombre,
+                email: req.body.registro_email
+            }
+        });
+    }
+
+    /*
+    //Extraer los datos 
+    const {registro_nombre, registro_email, registro_password} = req.body;
+    // Verificar que el usuario no esté duplicado 
+    //where: columna email de la BD {email: req.body.email}
+    const existeUsuario = await User.findOne({where: {user_email : registro_email}})
+    if(existeUsuario){
+        return res.render('registro' , {
+            errores: [{msg: 'El usuario ya está registrado'}],
+            usuario: {
+                nombre: req.body.registro_nombre,
+                email: req.body.registro_email
+            }
+        });
+    }
+
+    const usuario = await User.create(req.body)
+    res.json(usuario)
+    */
+
 }
 
 export const new_user = async (req, res, next) => {

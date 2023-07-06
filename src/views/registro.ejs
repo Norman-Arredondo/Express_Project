@@ -10,36 +10,77 @@
             <p class="is-size-3 has-text-weight-bold">Registrar Usuario</p>
         </div>
 
+      
+
         <div class="columns is-centered mt-5">
-            <div class="column is-one-third has-background-white py-4 px-4 box is-rounded"
-                style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                <form action="" class="colum is-centered">
+            <div class="column is-one-third has-background-white py-4 px-4 box is-rounded">
+                <form class="colum is-centered" method="POST" action="/users/registro">
                     <div class="mb-3">
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Nombre</label>
-                        <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre">
+                        <div class="control has-icons-left has-icons-right">
+                            <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre" name="registro_nombre">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user" id="iconGood"></i>
+                            </span>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Email</label>
-                        <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email">
+                        <div class="control has-icons-left has-icons-right">
+                            <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email" name="registro_email">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope" id="iconGood"></i>
+                            </span>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Contraseña</label>
-                        <input type="password" class="input is-fullwidth has-padding-small mt-1" placeholder="******">
+                        <div class="control has-icons-left has-icons-right">
+                            <input type="password" class="input is-fullwidth has-padding-small mt-1"
+                                placeholder="******" name="registro_password">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock" id="iconGood"></i>
+                            </span>
+                        </div>
+                        <p class="help is-danger" id="mensaje_password"></p>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" id="show_password_cb">
+                                Ver contraseña
+                            </label>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Repetir Contraseña</label>
-                        <input type="password" class="input is-fullwidth has-padding-small mt-1" placeholder="******">
+                        <div class="control has-icons-left has-icons-right">
+                            <input type="password" class="input is-fullwidth has-padding-small mt-1"
+                                placeholder="******" name="registro_repetir_password">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock" id="iconGood"></i>
+                            </span>
+                            <p class="help is-danger" id="mensaje_password"></p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" id="show_password_cb">
+                                Ver contraseña
+                            </label>
+                        </div>
                     </div>
                     <div class="field is-grouped is-grouped-right mt-5">
                         <div class="control">
                             <button class="button is-danger is-outlined">Cancelar</button>
                         </div>
                         <div class="control">
-                            <button class="button is-link is-outlined">Registrar</button>
+                            <button class="button is-link is-outlined" type="submit">Registrar</button>
                         </div>
                     </div>
                 </form>
