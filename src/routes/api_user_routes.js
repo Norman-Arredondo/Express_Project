@@ -3,9 +3,17 @@ import express from "express";
 import { new_user_validation,
      login_validation 
     } from "../validators/user_validations.js";
-import { new_user, login, verify_token, users_view} from "../controllers/user_controller.js";
+import { new_user, login, verify_token, users_view, registrar} from "../controllers/user_controller.js";
 
 const api_user_router = express.Router();
+
+//Endpoint para registro de usuarios
+//Registra un nuevo Usuario
+api_user_router.post("/", new_user_validation, new_user);
+api_user_router.post("/login", login_validation, login);
+api_user_router.post("/users/users", users_view, );
+
+
 
 api_user_router.get("/", (req, res, next) => {
     //All users
@@ -33,11 +41,6 @@ api_user_router.delete("/:id", verify_token, (req, res, next) => {
     res.send(`Ver usuario ${params.id}`)
 });
 
-//Endpoint para registro de usuarios
-//Registra un nuevo Usuario
-api_user_router.post("/", new_user_validation, new_user);
-api_user_router.post("/login", login_validation, login);
-api_user_router.post("/users/users", users_view, );
 
 export default api_user_router;
 
