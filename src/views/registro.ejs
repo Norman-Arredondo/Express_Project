@@ -29,18 +29,19 @@
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Email</label>
                         <div class="control has-icons-left has-icons-right">
-                            <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email" name="user_email">
+                            <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email" name="user_email" id="email_input">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope" id="iconGood"></i>
                             </span>
                         </div>
+                        <p class="help is-danger" id="mensaje_correo"></p>
                     </div>
                     <div class="mb-3">
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Contraseña</label>
                         <div class="control has-icons-left has-icons-right">
                             <input type="password" class="input is-fullwidth has-padding-small mt-1"
-                                placeholder="******" name="user_password">
+                                placeholder="******" name="user_password" id="password_input">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock" id="iconGood"></i>
                             </span>
@@ -60,11 +61,11 @@
                             Repetir Contraseña</label>
                         <div class="control has-icons-left has-icons-right">
                             <input type="password" class="input is-fullwidth has-padding-small mt-1"
-                                placeholder="******" name="repetir_password">
+                                placeholder="******" name="repetir_password" id="repetir_password_input">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock" id="iconGood"></i>
                             </span>
-                            <p class="help is-danger" id="mensaje_password"></p>
+                            <p class="help is-danger" id="mensaje_password2"></p>
                         </div>
                     </div>
                     <div class="field">
@@ -80,13 +81,13 @@
                             <a class="button is-danger is-outlined" href="/login">Cancelar</a>
                         </div>
                         <div class="control">
-                            <button class="button is-link is-outlined" type="submit">Registrar</button>
+                            <button class="button is-link is-outlined" type="submit" id="send_btn">Registrar</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </body>
-    <script src="<%= base_url %>"></script>
+    <script src="<%= base_url %>../js/registro.js"></script>
 
 </html>
