@@ -10,16 +10,30 @@
             <p class="is-size-3 has-text-weight-bold">Registrar Usuario</p>
         </div>
 
-      
+        <% if (errores.length > 0) { %>
+            <div class="column is-one-third mx-auto my-10">
+              <% errores.forEach(error => { %>
+                <%if(error.param === 'user_email'){ %>
+                    <p class="notification is-alert has-text-white is-uppercase is-size-7 has-text-centered py-2 mb-1 has-text-weight-bold">Aquí escribe: Email no válido</p>
+                    
+               <% } %>
+                <p class="notification is-danger has-text-white is-uppercase is-size-7 has-text-centered py-2 mb-1 has-text-weight-bold">
+                  <%= error.msg %>
+                </p>
+              <% }); %>
+            </div>
+        <% } %>
+
 
         <div class="columns is-centered mt-5">
-            <div class="column is-one-third has-background-white py-4 px-4 box is-rounded">
-                <form class="colum is-centered" method="POST" action="/users/registro">
+            <div class="column is-one-quarter has-background-white py-4 px-4 box is-rounded">
+                <form class="colum is-centered" method="POST" action="/users/registro" novalidate>
                     <div class="mb-3">
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Nombre</label>
                         <div class="control has-icons-left has-icons-right">
-                            <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre" name="user_name">
+                            <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre"
+                                name="user_name">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-user" id="iconGood"></i>
                             </span>
@@ -29,18 +43,20 @@
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Email</label>
                         <div class="control has-icons-left has-icons-right">
-                            <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email" name="user_email">
+                            <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email"
+                                name="user_email" id="email_input">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope" id="iconGood"></i>
                             </span>
                         </div>
+                        <p class="help is-danger" id="mensaje_correo"></p>
                     </div>
                     <div class="mb-3">
                         <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                             Contraseña</label>
                         <div class="control has-icons-left has-icons-right">
                             <input type="password" class="input is-fullwidth has-padding-small mt-1"
-                                placeholder="******" name="user_password">
+                                placeholder="******" name="user_password" id="password_input">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock" id="iconGood"></i>
                             </span>
@@ -60,11 +76,11 @@
                             Repetir Contraseña</label>
                         <div class="control has-icons-left has-icons-right">
                             <input type="password" class="input is-fullwidth has-padding-small mt-1"
-                                placeholder="******" name="repetir_password">
+                                placeholder="******" name="repetir_password" id="repetir_password_input">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock" id="iconGood"></i>
                             </span>
-                            <p class="help is-danger" id="mensaje_password"></p>
+                            <p class="help is-danger" id="mensaje_password2"></p>
                         </div>
                     </div>
                     <div class="field">
@@ -80,13 +96,13 @@
                             <a class="button is-danger is-outlined" href="/login">Cancelar</a>
                         </div>
                         <div class="control">
-                            <button class="button is-link is-outlined" type="submit">Registrar</button>
+                            <button class="button is-link is-outlined" type="submit" id="send_btn">Registrar</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </body>
-    <script src="<%= base_url %>"></script>
+    <script src="<%= base_url %>../js/registro.js"></script>
 
 </html>

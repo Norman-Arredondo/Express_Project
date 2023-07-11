@@ -23,31 +23,43 @@ export const users_view = async (req, res, next) => {
 
 export const registro_view = async (req, res, next) => {
     res.render('registro', {
-        base_url: process.env.BASE_URL,  
+        base_url: process.env.BASE_URL,
+        errores: []
+
     })
 }
 
 export const registrar = async (req, res, next) => {
-    //req es lo que enviamos al servidor
-    console.log(req.body)
+    try {
+        //Validación
+        await check('user_name').notEmpty().trim().withMessage('El campo nombre no puede ir vacío').run(req);
+        await check('user_email').isEmail().trim().withMessage('Ingresa un Email válido').run(req);
+        await check('user_password').isLength({ min: 6, max: 6 }).withMessage('La contraseña debe de ser de exactamente 6 caracteres').run(req);
+        await check('repetir-password').equals(req.body.user_password).withMessage('Las contraseñas deben de ser iguales').run(req);
 
-    const usuario = await User.create(req.body)
-    res.json(usuario)
+        let resultado = validationResult(req); //Guarda el resultado de la validación
+
+        //Verificar que el resultado esté vacío
+        if (!resultado.isEmpty()) {
+            //Errores
+            return res.render('registro', {
+                base_url: process.env.BASE_URL,
+                errores: resultado.array() //El resultaod lo convertimos a un array
+            })
+        }
+        //res.json(resultado.array());
+        //const usuario = await User.create(req.body)
+        //res.json(usuario)
+
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+
 }
-   
-    
 
-/*
-//Validación
-await check('user_name').notEmpty().withMessage('El campo nombre no puede ir vacío').run(req);
-await check('user_email').isEmail().withMessage('Ingresa un Email válido').run(req);
-await check('user_password').isLength({min: 6, max: 6}).withMessage('La contraseña debe de ser de exactamente 6 caracteres').run(req);
-await check('repetir-password').equals(req.body.password).withMessage('Las contraseñas deben de ser iguales').run(req);
 
-let resultado = validationResult(req); //Guarda el resultado de la validación
 
-res.json(resultado.array());
-*/
 
 
 export const new_user = async (req, res, next) => {
