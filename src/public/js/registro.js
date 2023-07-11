@@ -14,6 +14,7 @@ const mensaje_correo = document.querySelector("#mensaje_correo");
 
 
 //Funciones con Arrow Funcions
+
 const show_password = (e) => {
     //e.target.checked -> regresa true o false
     if(e.target.checked){
@@ -24,7 +25,6 @@ const show_password = (e) => {
     }
 } 
 
-//Funciones con Arrow Funcions
 const show_repetir_password = (e) => {
     //e.target.checked -> regresa true o false
     if(e.target.checked){
@@ -34,6 +34,7 @@ const show_repetir_password = (e) => {
         repetir_password_input.setAttribute("type", "password");
     }
 } 
+
 
 
 //Events
