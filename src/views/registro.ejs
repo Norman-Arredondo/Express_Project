@@ -11,8 +11,12 @@
         </div>
 
         <% if (errores.length > 0) { %>
-            <div class="container is-max-desktop mx-auto my-10">
+            <div class="column is-one-third mx-auto my-10">
               <% errores.forEach(error => { %>
+                <%if(error.param === 'user_email'){ %>
+                    <p class="notification is-alert has-text-white is-uppercase is-size-7 has-text-centered py-2 mb-1 has-text-weight-bold">Aquí escribe: Email no válido</p>
+                    
+               <% } %>
                 <p class="notification is-danger has-text-white is-uppercase is-size-7 has-text-centered py-2 mb-1 has-text-weight-bold">
                   <%= error.msg %>
                 </p>
