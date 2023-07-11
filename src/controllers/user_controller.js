@@ -29,16 +29,18 @@ export const registro_view = async (req, res, next) => {
     })
 }
 
+
 export const registrar = async (req, res, next) => {
+    
     try {
         //Validación
         await check('user_name').notEmpty().trim().withMessage('El campo nombre no puede ir vacío').run(req);
         await check('user_email').isEmail().trim().withMessage('Ingresa un Email válido').run(req);
         await check('user_password').isLength({ min: 6, max: 6 }).withMessage('La contraseña debe de ser de exactamente 6 caracteres').run(req);
-        await check('repetir-password').equals(req.body.user_password).withMessage('Las contraseñas deben de ser iguales').run(req);
+        await check('repetir_password').equals(req.body.user_password).withMessage('Las contraseñas deben de ser iguales').run(req);
 
         let resultado = validationResult(req); //Guarda el resultado de la validación
-
+        //console.log(JSON.stringify(resultado.array()))
         //Verificar que el resultado esté vacío
         if (!resultado.isEmpty()) {
             //Errores
@@ -48,8 +50,8 @@ export const registrar = async (req, res, next) => {
             })
         }
         //res.json(resultado.array());
-        //const usuario = await User.create(req.body)
-        //res.json(usuario)
+        const usuario = await User.create(req.body)
+        res.json(usuario)
 
     } catch (error) {
         res.status(400).send(error);
