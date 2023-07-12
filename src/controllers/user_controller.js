@@ -25,14 +25,15 @@ export const registro_view = async (req, res, next) => {
     res.render('registro', {
         base_url: process.env.BASE_URL,
         errores: [],
-        usuario : {}
+        usuario: {},
+        duplicado: [],
 
     })
 }
 
 
 export const registrar = async (req, res, next) => {
-    
+
     try {
         //Validación
         await check('user_name').notEmpty().trim().withMessage('El campo nombre no puede ir vacío').run(req);
@@ -51,12 +52,29 @@ export const registrar = async (req, res, next) => {
                 usuario: {
                     user_name: req.body.user_name,
                     user_email: req.body.user_email
-                }
+                },
+                duplicado: [], 
             })
         }
+        
+        //Validar que no exista el usuario previamente
+        const user_exist = await User.findOne({ where: { user_email: req.body.user_email } });
+        if (user_exist !== null) {
+             return res.render('registro', {
+                base_url: process.env.BASE_URL,
+                errores: resultado.array(),
+                usuario: {
+                    user_name: req.body.user_name,
+                    user_email: req.body.user_email
+                },
+                duplicado: [{msg: 'El email ingresado ya está asociado a una cuenta'}], //El resultado lo convertimos a un array
+            })
+        }
+
+
         //res.json(resultado.array());
-        const usuario = await User.create(req.body)
-        res.json(usuario)
+        //const usuario = await User.create(req.body)
+        //res.json(usuario)
 
     } catch (error) {
         res.status(400).send(error);
