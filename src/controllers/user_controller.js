@@ -1,4 +1,4 @@
-import { check, validationResult } from "express-validator";
+import { body, check, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import moment from "moment/moment.js";
 import jwt from "jsonwebtoken";
@@ -42,36 +42,49 @@ export const registrar = async (req, res, next) => {
         await check('repetir_password').equals(req.body.user_password).withMessage('Las contraseñas deben de ser iguales').run(req);
 
         let resultado = validationResult(req); //Guarda el resultado de la validación
-        //console.log(JSON.stringify(resultado.array()))
+        //console.log(resultado.array())
         //Verificar que el resultado esté vacío
         if (!resultado.isEmpty()) {
             //Errores
             return res.render('registro', {
                 base_url: process.env.BASE_URL,
-                errores: resultado.array(), //El resultaod lo convertimos a un array
+                errores: resultado.array(), //El resultado lo convertimos a un array
                 usuario: {
                     user_name: req.body.user_name,
                     user_email: req.body.user_email
                 },
-                duplicado: [], 
+                duplicado: [],
             })
         }
-        
+
         //Validar que no exista el usuario previamente
         const user_exist = await User.findOne({ where: { user_email: req.body.user_email } });
         if (user_exist !== null) {
-             return res.render('registro', {
+            return res.render('registro', {
                 base_url: process.env.BASE_URL,
                 errores: resultado.array(),
                 usuario: {
                     user_name: req.body.user_name,
                     user_email: req.body.user_email
                 },
-                duplicado: [{msg: 'El email ingresado ya está asociado a una cuenta'}], //El resultado lo convertimos a un array
+                duplicado: [
+                    { msg: 'El email ingresado ya está asociado a una cuenta' }
+                ],
             })
         }
 
+        //Almcacenar un usuario
+        const { user_name, user_email, user_password } = req.body
+        const usuario = await User.create({
+            user_name,
+            user_email,
+            user_password,
+            user_created_at: moment().format("YYYY-MM-DD hh:mm:ss"),
+            user_modify_at: moment().format("YYYY-MM-DD hh:mm:ss"),
+            user_status: 'A' //Se encuentra en helpers
+        });
 
+        
         //res.json(resultado.array());
         //const usuario = await User.create(req.body)
         //res.json(usuario)
