@@ -33,7 +33,7 @@
                             Nombre</label>
                         <div class="control has-icons-left has-icons-right">
                             <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre"
-                                name="user_name">
+                                name="user_name" value="<%= usuario ? usuario.user_name : ''%>"/>
                             <span class="icon is-small is-left">
                                 <i class="fas fa-user" id="iconGood"></i>
                             </span>
@@ -51,7 +51,7 @@
                             Email</label>
                         <div class="control has-icons-left has-icons-right">
                             <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email"
-                                name="user_email" id="email_input">
+                                name="user_email" id="email_input" value="<%= usuario ? usuario.user_email : ''%>"/>
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope" id="iconGood"></i>
                             </span>
