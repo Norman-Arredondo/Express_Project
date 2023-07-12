@@ -24,7 +24,8 @@ export const users_view = async (req, res, next) => {
 export const registro_view = async (req, res, next) => {
     res.render('registro', {
         base_url: process.env.BASE_URL,
-        errores: []
+        errores: [],
+        usuario : {}
 
     })
 }
@@ -46,7 +47,11 @@ export const registrar = async (req, res, next) => {
             //Errores
             return res.render('registro', {
                 base_url: process.env.BASE_URL,
-                errores: resultado.array() //El resultaod lo convertimos a un array
+                errores: resultado.array(), //El resultaod lo convertimos a un array
+                usuario: {
+                    user_name: req.body.user_name,
+                    user_email: req.body.user_email
+                }
             })
         }
         //res.json(resultado.array());
