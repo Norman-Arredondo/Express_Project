@@ -84,7 +84,13 @@ export const registrar = async (req, res, next) => {
             user_status: 'A' //Se encuentra en helpers
         });
 
-        
+        //Mostrar mensaje de confirmación
+        res.render('templates/mensaje', {
+            base_url: process.env.BASE_URL,
+            pagina: 'Cuenta Creada Correctamente',
+        });
+
+
         //res.json(resultado.array());
         //const usuario = await User.create(req.body)
         //res.json(usuario)
