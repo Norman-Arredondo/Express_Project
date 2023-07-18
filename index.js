@@ -70,4 +70,3 @@ app.listen(port, () => {
     console.log(` Servidor activo en el puerto ${port}`);
     console.log(` Ruta del servidor ${base_url}`);
 });
-

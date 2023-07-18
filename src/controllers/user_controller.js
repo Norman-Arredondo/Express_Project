@@ -1,25 +1,12 @@
-import { body, check, validationResult } from "express-validator";
+import { check, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import moment from "moment/moment.js";
 import jwt from "jsonwebtoken";
 import { } from "dotenv/config"; //variables de entorno
 import { User } from "../models/user_model.js";
+import { Op } from 'sequelize';
 
-export const users_view = async (req, res, next) => {
-    try {
 
-        console.log("=======================");
-        const users = await User.findAll();
-
-        res.render("users", {
-            base_url: process.env.BASE_URL,
-            users: users
-        })
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
 
 export const registro_view = async (req, res, next) => {
     res.render('registro', {
@@ -30,7 +17,6 @@ export const registro_view = async (req, res, next) => {
 
     })
 }
-
 
 export const registrar = async (req, res, next) => {
 
@@ -103,9 +89,6 @@ export const registrar = async (req, res, next) => {
 }
 
 
-
-
-
 export const new_user = async (req, res, next) => {
     try {
         // Validar errores con express-validator
@@ -150,6 +133,7 @@ export const new_user = async (req, res, next) => {
     }
 }
 
+//Login
 export const login = async (req, res, next) => {
     try {
 
@@ -212,3 +196,75 @@ export const verify_token = (req, res, next) => {
         next();
     }
 }
+
+//Recargamos la vista de create user
+export const create_user_view = async (req, res, next) => {
+    try {
+        console.log("vista create")
+        res.render("editar-registro", {
+            base_url: process.env.BASE_URL,
+        })
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+export const edit_user_view = async (req, res, next) => {
+    try {
+        //consultamos el usuario
+        console.log("ID: ", req.params.user_id);
+
+        const user_exist = await User.findOne({ where: { user_id: req.params.user_id } });
+        console.log("user_id: ", user_exist.user_id)
+        if (user_exist !== null) {
+            res.render("editar-registro", {
+                base_url: process.env.BASE_URL,
+                user: user_exist
+                // user: user_exist
+            })
+        }
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+//Dashboard para mostrar usuarios con estatus A
+export const users_view = async (req, res, next) => {
+    try {
+        const users = await User.findAll({
+            where: { user_status: 'A' },
+        });
+
+        res.render("users", {
+            base_url: process.env.BASE_URL,
+            users: users,
+        })
+        /*
+        const users = await User.findAll({ where: { user_status: 'A' } });
+        res.render("users", {
+            base_url: process.env.BASE_URL,
+            users: users
+        })*/
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+export const users_view_post = async (req, res, next) => {
+    try {
+        const searchTerm = req.body.searchTerm;
+        const users = await User.findAll({
+            where: {
+                user_status: 'A',
+                user_email: { [Op.like]: `%${searchTerm}%` },
+            },
+        });
+        res.json({ users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error interno del servidor');
+    }
+};

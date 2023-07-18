@@ -3,7 +3,7 @@ import express from "express";
 import { new_user_validation,
      login_validation 
     } from "../validators/user_validations.js";
-import { new_user, login, verify_token, users_view, registrar} from "../controllers/user_controller.js";
+import { new_user, login, verify_token,} from "../controllers/user_controller.js";
 
 const api_user_router = express.Router();
 
@@ -11,10 +11,20 @@ const api_user_router = express.Router();
 //Registra un nuevo Usuario
 api_user_router.post("/", new_user_validation, new_user);
 api_user_router.post("/login", login_validation, login);
-api_user_router.post("/users/users", users_view, );
 
 
 
+
+api_user_router.post(':id/eliminar', (req, res, next) => {
+
+});
+  
+
+
+export default api_user_router;
+
+/**
+ * 
 api_user_router.get("/", (req, res, next) => {
     //All users
     res.send("usuarios");
@@ -40,9 +50,7 @@ api_user_router.delete("/:id", verify_token, (req, res, next) => {
     console.log("params:", params);
     res.send(`Ver usuario ${params.id}`)
 });
-
-
-export default api_user_router;
+ */
 
 /* 
     Editar usuario

@@ -6,39 +6,6 @@
     <body>
         <%- include("templates/navbar") %>
 
-            <!--
-<div class="table-container">
-                <table class="table is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th><abbr title="Position">ID</abbr></th>
-                            <th>NOMBRE</th>
-                            <th>Email</th>
-                            <th><abbr title="Played"> #</abbr></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%users.forEach(user=> { %>
-                            <tr>
-                                <th>
-                                    <%=user.user_id %>
-                                </th>
-                                <td>
-                                    <%=user.user_name %>
-                                </td>
-                                <td>
-                                    <%=user.user_email %>
-                                </td>
-                                <td>Editar / registrar</td>
-                            </tr>
-                            <% });%>
-                    </tbody>
-
-                </table>
-            </div>
-
--->
-
             <div class="hero is-fullheight ">
                 <article class="panel is-link mt-6 ml-6 mr-6">
                     <p class="panel-heading">
@@ -46,14 +13,21 @@
                     </p>
 
                     <!--Búsqueda-->
-                    <div class="panel-block">
-                        <p class="control has-icons-left">
-                            <input class="input is-link" type="text" placeholder="Search">
-                            <span class="icon is-left">
-                                <i class="fas fa-search" aria-hidden="true"></i>
-                            </span>
-                        </p>
-                    </div>
+                    <form>
+                        <div class="panel-block">
+                            <p class="control has-icons-left">
+                                <input class="input is-link" type="text" id="searchTerm"
+                                    placeholder="Buscar por email" />
+                                <span class="icon is-left">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                </span>
+                            </p>
+                            <p class="control">
+                                <button class="button is-link ml-1" type="button"
+                                    onclick="searchUsers()">Buscar</button>
+                            </p>
+                        </div>
+                    </form>
                     <div class="panel-block has-text-weight-bold ">
                         <p class="control px-2">
                             ID
@@ -82,16 +56,43 @@
                                     <%=user.user_email %>
                                 </p>
                                 <p class="control px-2">
-                                    <button class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt"></button>
-                                    <button class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt"></button>
+                                    <button
+                                        class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt"></button>
+                                    <button
+                                        class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt"></button>
                                 </p>
                             </div>
                             <% });%>
                     </div>
-
                 </article>
 
-                <p class="panel">Hola</p>
+<!--
+
+<table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                             Otros campos de usuario
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach((user)=> { %>
+                            <tr>
+                                <td>
+                                    <%= user.user_name %>
+                                </td>
+                                <td>
+                                    <%= user.user_email %>
+                                </td>
+                                Otros campos de usuario 
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+-->
+
+                
 
             </div>
 
