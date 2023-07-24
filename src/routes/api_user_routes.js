@@ -3,22 +3,19 @@ import express from "express";
 import { new_user_validation,
      login_validation 
     } from "../validators/user_validations.js";
-import { new_user, login, verify_token,} from "../controllers/user_controller.js";
+import { new_user, login, status_user} from "../controllers/user_controller.js";
 
 const api_user_router = express.Router();
 
-//Endpoint para registro de usuarios
-//Registra un nuevo Usuario
-api_user_router.post("/", new_user_validation, new_user);
+
+//Login
 api_user_router.post("/login", login_validation, login);
 
+//Endpoint para Crear cuenta
+api_user_router.post("/", new_user_validation, new_user);
 
-
-
-api_user_router.post(':id/eliminar', (req, res, next) => {
-
-});
-  
+//Eliminar usuario
+api_user_router.delete("/:user_id", status_user);
 
 
 export default api_user_router;
