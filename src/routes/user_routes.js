@@ -1,6 +1,6 @@
 import express from "express";
 import {session_validation} from "../validators/session_validation.js";
-import { users_view, registro_view, registrar, users_view_post, create_user_view, delete_user } from "../controllers/user_controller.js";
+import { users_view, registro_view, registrar, create_user_view, delete_user } from "../controllers/user_controller.js";
 
 //Para renderizar las vistas
 const user_routes = express.Router();
@@ -9,8 +9,6 @@ const user_routes = express.Router();
 
 //Dashboard
 user_routes.get("/users", session_validation, users_view);
-user_routes.post('/users', users_view_post);
-
 
 //Vista Nuevo Usuario --Corregir
 user_routes.get("/registro", registro_view);
