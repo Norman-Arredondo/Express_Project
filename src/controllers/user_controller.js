@@ -242,19 +242,22 @@ export const users_view = async (req, res, next) => {
 
 export const users_view_post = async (req, res, next) => {
     try {
-        const searchTerm = req.body.searchTerm;
+        const searchTerm = req.body.buscador;
+
+        // Realizar la búsqueda y filtrar los usuarios con el campo user_status igual a 'A'
         const users = await User.findAll({
             where: {
                 user_status: 'A',
-                user_email: { [Op.like]: `%${searchTerm}%` },
-            },
+                user_email: { [Op.like]: `%${searchTerm}%` }
+            }
         });
+
         res.json({ users });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error interno del servidor');
     }
-};
+}
 
 //Recargamos la vista de create user
 export const create_user_view = async (req, res, next) => {
@@ -272,30 +275,30 @@ export const create_user_view = async (req, res, next) => {
 }
 
 export const delete_user = async (req, res, next) => {
-    try{
+    try {
         //consultamos el usuario
         //console.log("ID: ",req.params.user_id);
 
-        const user_exist = await User.findOne({where: {user_id: req.params.user_id}});
-        console.log("user_id: ",user_exist.user_id)
-        if(user_exist !== null){
-            res.render("delete",{
+        const user_exist = await User.findOne({ where: { user_id: req.params.user_id } });
+        console.log("user_id: ", user_exist.user_id)
+        if (user_exist !== null) {
+            res.render("delete", {
                 base_url: process.env.BASE_URL,
                 user: user_exist
-                
+
             })
         }
-    }catch (error) {
+    } catch (error) {
         res.status(400).send(error);
         next();
     }
 }
 
-export const status_user = async (req,res,next) => {
-    try{
+export const status_user = async (req, res, next) => {
+    try {
         //No vamos a borrar, vamos a actualizar el status de A a I
-        const user_update = await User.update({user_status:"I"},{
-            where:{
+        const user_update = await User.update({ user_status: "I" }, {
+            where: {
                 user_id: req.params.user_id
             }
         })
@@ -304,7 +307,7 @@ export const status_user = async (req,res,next) => {
             respuesta: user_update,
         })
 
-    }catch(error){
+    } catch (error) {
         res.status(400).send(error);
         next();
     }
