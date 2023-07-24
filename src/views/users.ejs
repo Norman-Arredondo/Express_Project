@@ -8,8 +8,9 @@
 
             <div class="hero is-fullheight ">
                 <article class="panel is-link mt-6 ml-6 mr-6">
-                    <p class="panel-heading">
+                    <p class="panel-heading mb-1">
                         Usuarios Registrados
+                        <a class="button is-warning is-pulled-right is-small has-text-weight-bold" href="/users/user/nuevo">+ Nuevo Usuario</a>
                     </p>
 
                     <!--Búsqueda-->
@@ -56,17 +57,20 @@
                                     <%=user.user_email %>
                                 </p>
                                 <p class="control px-2">
-                                    <button
-                                        class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt"></button>
-                                    <button
-                                        class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt"></button>
+                                    <a
+                                        class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt"
+                                        href=""
+                                        ></a>
+                                    <a
+                                        class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt"
+                                        href="/users/delete/<%= user.user_id  %>"></a>
                                 </p>
                             </div>
                             <% });%>
                     </div>
                 </article>
 
-<!--
+                <!--
 
 <table class="table">
                     <thead>
@@ -92,7 +96,7 @@
                 </table>
 -->
 
-                
+
 
             </div>
 
