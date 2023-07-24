@@ -7,7 +7,7 @@ import { User } from "../models/user_model.js";
 import { Op } from 'sequelize';
 
 
-
+//Formulario para Crear usuario ---Corregir
 export const registro_view = async (req, res, next) => {
     res.render('registro', {
         base_url: process.env.BASE_URL,
@@ -17,7 +17,7 @@ export const registro_view = async (req, res, next) => {
 
     })
 }
-
+//Formulario para Crear usuario ---Corregir
 export const registrar = async (req, res, next) => {
 
     try {
@@ -88,7 +88,7 @@ export const registrar = async (req, res, next) => {
 
 }
 
-
+//Crear un Usuario
 export const new_user = async (req, res, next) => {
     try {
         // Validar errores con express-validator
@@ -197,19 +197,6 @@ export const verify_token = (req, res, next) => {
     }
 }
 
-//Recargamos la vista de create user
-export const create_user_view = async (req, res, next) => {
-    try {
-        console.log("vista create")
-        res.render("editar-registro", {
-            base_url: process.env.BASE_URL,
-        })
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
 export const edit_user_view = async (req, res, next) => {
     try {
         //consultamos el usuario
@@ -268,3 +255,57 @@ export const users_view_post = async (req, res, next) => {
         res.status(500).send('Error interno del servidor');
     }
 };
+
+//Recargamos la vista de create user
+export const create_user_view = async (req, res, next) => {
+    try {
+        res.render("new-user", {
+            base_url: process.env.BASE_URL,
+            errores: [],
+            usuario: {},
+            duplicado: [],
+        })
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+export const delete_user = async (req, res, next) => {
+    try{
+        //consultamos el usuario
+        //console.log("ID: ",req.params.user_id);
+
+        const user_exist = await User.findOne({where: {user_id: req.params.user_id}});
+        console.log("user_id: ",user_exist.user_id)
+        if(user_exist !== null){
+            res.render("delete",{
+                base_url: process.env.BASE_URL,
+                user: user_exist
+                
+            })
+        }
+    }catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+export const status_user = async (req,res,next) => {
+    try{
+        //No vamos a borrar, vamos a actualizar el status de A a I
+        const user_update = await User.update({user_status:"I"},{
+            where:{
+                user_id: req.params.user_id
+            }
+        })
+
+        res.json({
+            respuesta: user_update,
+        })
+
+    }catch(error){
+        res.status(400).send(error);
+        next();
+    }
+}
