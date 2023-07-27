@@ -50,7 +50,7 @@
                             Email</label>
                         <div class="control has-icons-left has-icons-right">
                             <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email"
-                                name="user_email" id="user_email_input" value="<%=user.user_email %>" />
+                                name="" id="user_email_input" value="<%=user.user_email %>" />
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope" id=""></i>
                             </span>
@@ -73,7 +73,7 @@
                                 Contraseña</label>
                             <div class="control has-icons-left has-icons-right">
                                 <input type="password" class="input is-fullwidth has-padding-small mt-1"
-                                    placeholder="******" name="user_password" id="user_password_input">
+                                    placeholder="******" name="" id="user_password_input">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-lock" id=""></i>
                                 </span>
@@ -89,10 +89,7 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
 
-
-                    <div id="repeat_password_field" style="display: none;">
                         <div class="mb-3">
                             <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
                                 Repetir Contraseña</label>
@@ -114,7 +111,9 @@
                                 </label>
                             </div>
                         </div>
+
                     </div>
+
 
 
                     <div class="field is-grouped is-grouped-right mt-5">
@@ -159,7 +158,8 @@
             </div>
 
         </div>
+        <p>Es este archivo</p>
     </body>
-    <script src="<%= base_url %>../js/editar-registro.js"></script>
+    <script src="<%= base_url %>../js/editar_user.js"></script>
 
 </html>

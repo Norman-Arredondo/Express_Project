@@ -8,8 +8,10 @@
 
             <div class="hero is-fullheight ">
                 <article class="panel is-link mt-6 ml-6 mr-6">
-                    <p class="panel-heading">
+                    <p class="panel-heading mb-1">
                         Usuarios Registrados
+                        <a class="button is-warning is-pulled-right is-small has-text-weight-bold"
+                            href="/users/user/nuevo">+ Nuevo Usuario</a>
                     </p>
 
                     <!--Búsqueda-->
@@ -23,8 +25,8 @@
                                 </span>
                             </p>
                             <p class="control">
-                                <button class="button is-link ml-1" type="button"
-                                    onclick="searchUsers()">Buscar</button>
+                                <button class="button is-link ml-1" type="button" onclick=""
+                                    id="searchButton">Buscar</button>
                             </p>
                         </div>
                     </form>
@@ -56,44 +58,15 @@
                                     <%=user.user_email %>
                                 </p>
                                 <p class="control px-2">
-                                    <button
-                                        class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt"></button>
-                                    <button
-                                        class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt"></button>
+                                    <a class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt"
+                                        href="/users/edit/<%= user.user_id  %>"></a>
+                                    <a class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt"
+                                        href="/users/delete/<%= user.user_id  %>"></a>
                                 </p>
                             </div>
                             <% });%>
                     </div>
                 </article>
-
-<!--
-
-<table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                             Otros campos de usuario
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% users.forEach((user)=> { %>
-                            <tr>
-                                <td>
-                                    <%= user.user_name %>
-                                </td>
-                                <td>
-                                    <%= user.user_email %>
-                                </td>
-                                Otros campos de usuario 
-                            </tr>
-                            <% }); %>
-                    </tbody>
-                </table>
--->
-
-                
-
             </div>
 
 

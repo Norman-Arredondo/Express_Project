@@ -7,6 +7,276 @@ import { User } from "../models/user_model.js";
 import { Op } from 'sequelize';
 
 
+//Proteger las rutas que son parte de la API
+export const verify_token = (req, res, next) => {
+    const { verify } = jwt;
+    const token = req.header("auth-token")
+    if (!token) {
+        res.status(400).send("Acceso denegado");
+        next();
+    }
+    try {
+        const verified = verify(token, process.env.TOKEN_SECRECT);
+        req.user = verified;
+        next();
+    } catch (error) {
+        res.status(400).send("Token invalido");
+        next();
+    }
+}
+
+//Login
+export const login = async (req, res, next) => {
+    try {
+
+        // Validar errores con express-validator
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            res.status(400).json({ errores: errores.array() })
+            return;
+        }
+        const { body } = req;
+
+        // Verificar si el usuario existe
+        const user = await User.findOne({ where: { user_email: body.user_email } });
+        if (!user) {
+            res.status(400).json({ error: "El usuario no existe en la base de datos" })
+            return;
+        }
+        // Verificar que la contraseña sea correcta
+        const match = await bcrypt.compare(body.user_password, user.user_password);
+        if (!match) {
+            res.status(400).json({ error: "La contraseña es incorrecta" })
+            return;
+        }
+        // Se crea el token de seguridad
+        // Payload
+        const payload = { user_id: user.user_id }
+        const { sign } = jwt;
+        const token = sign(payload, process.env.TOKEN_SECRET, { expiresIn: (60000 * 30) })
+        console.log("token::::", token);
+
+        // Se crea la sesión del usuario
+        req.session.user_id = user.user_id;
+        req.session.loged = true;
+
+        // Se genera respuesta con el token de seguridad en el header
+        res.header("auth-token", token).json({
+            token: token,
+            user_id: user.user_id
+        });
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+//Dashboard View para mostrar usuarios con estatus A
+export const users_view = async (req, res, next) => {
+    try {
+        const users = await User.findAll({
+            where: { user_status: 'A' },
+        });
+
+        res.render("users", {
+            base_url: process.env.BASE_URL,
+            users: users,
+        })
+
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+// Buscador en Dashboard (POST)
+export const buscador_dashboard_post = async (req, res, next) => {
+    try {
+        const searchTerm = req.body.buscador;
+
+        // Realizar la búsqueda y filtrar los usuarios con el campo user_status igual a 'A'
+        const users = await User.findAll({
+            where: {
+                user_status: 'A',
+                user_email: { [Op.like]: `%${searchTerm}%` }
+            }
+        });
+
+        res.json({ users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error interno del servidor');
+    }
+}
+
+// Eliminar Usuario View
+export const delete_user_view = async (req, res, next) => {
+    try {
+
+        const user_exist = await User.findOne({ where: { user_id: req.params.user_id } });
+        console.log("user_id: ", user_exist.user_id)
+        if (user_exist !== null) {
+            res.render("delete_user_view", {
+                base_url: process.env.BASE_URL,
+                user: user_exist
+
+            })
+        }
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+// Eliminar Usuario (DELETE)
+export const status_user_delete = async (req, res, next) => {
+    try {
+        //No vamos a borrar, vamos a actualizar el status de A a I
+        const user_update = await User.update({ user_status: "I" }, {
+            where: {
+                user_id: req.params.user_id
+            }
+        })
+
+        res.json({
+            respuesta: user_update,
+        })
+
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+
+
+// Crear Cuenta (POST)
+export const new_user = async (req, res, next) => {
+    try {
+        // Validar errores con express-validator
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            res.status(400).json({ errores: errores.array() })
+            return;
+        }
+
+        const { body } = req;
+        //Validar que no exista el usuario previamente
+        const user_exist = await User.findOne({ where: { user_name: body.user_name } });
+        if (user_exist !== null) {
+            res.status(400).send("El usuario ya existe en el sistema");
+            return;
+        }
+
+        // Encriptar password
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hash = await bcrypt.hash(body.user_password, salt);
+
+        // Guardar nuevo registro en la base de datos
+        const new_user_created = await User.create({
+            user_name: body.user_name,
+            user_email: body.user_email,
+            user_password: hash,
+            user_created_at: moment().format("YYYY-MM-DD hh:mm:ss"),
+            user_modify_at: moment().format("YYYY-MM-DD hh:mm:ss"),
+            user_status: "A"
+
+        })
+
+        // Respuesta
+        res.json({
+            user_name: new_user_created.user_name,
+            created_at: new_user_created.user_created_at
+        });
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+// Editar Usuario View
+export const edit_user_view = async (req, res, next) => {
+    try {
+
+        const user_exist = await User.findOne({ where: { user_id: req.params.user_id } });
+
+        if (user_exist !== null) {
+            res.render("editar_user_view", {
+                base_url: process.env.BASE_URL,
+                user: user_exist
+            });
+        }
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+// Actualizar/Editar Usuario (PUT)
+export const edit_user_put = async (req, res, next) => {
+    try {
+        // Validar errores con express-validator
+        const errores = validationResult(req);
+        const { body } = req;
+
+        // Objeto para almacenar los campos a actualizar
+        const user_update = {};
+
+        if (!errores.isEmpty()) {
+            res.status(400).json({ errores: errores.array() });
+            return;
+        }
+
+        // Verificar si se proporcionó un nuevo nombre de usuario
+        if (body.user_name !== undefined) {
+            user_update.user_name = body.user_name;
+        }
+
+        // Verificar si se proporcionó un nuevo correo electrónico
+        if (body.user_email !== undefined) {
+            user_update.user_email = body.user_email;
+        }
+
+        // Verificar si se proporcionó un nuevo password
+        if (body.user_password !== undefined) {
+            // Encriptar password
+            const saltRounds = 10;
+            const salt = await bcrypt.genSalt(saltRounds);
+            const hash = await bcrypt.hash(body.user_password, salt);
+
+            user_update.user_password = hash;
+        }
+
+        // Agregar la fecha de modificación
+        user_update.user_modify_at = moment().format("YYYY-MM-DD hh:mm:ss");
+
+        // Actualizar el usuario en la base de datos con solo con los campos proporcionados
+        const result = await User.update(user_update, {
+            where: {
+                user_id: body.user_id
+            }
+        });
+
+        console.log("actualizado: ", result);
+
+        // Respuesta indicando que el usuario ha sido actualizado
+        res.json({
+            respuesta: "actualizado",
+        });
+    } catch (error) {
+        // Si ocurre un error, se envía una respuesta con el código de estado 400 y el mensaje de error
+        res.status(400).send(error);
+        next();
+    }
+}
+
+
+
+
+
+
+
 
 export const registro_view = async (req, res, next) => {
     res.render('registro', {
@@ -89,182 +359,3 @@ export const registrar = async (req, res, next) => {
 }
 
 
-export const new_user = async (req, res, next) => {
-    try {
-        // Validar errores con express-validator
-        const errores = validationResult(req);
-        if (!errores.isEmpty()) {
-            res.status(400).json({ errores: errores.array() })
-            return;
-        }
-
-        const { body } = req;
-        //Validar que no exista el usuario previamente
-        const user_exist = await User.findOne({ where: { user_name: body.user_name } });
-        if (user_exist !== null) {
-            res.status(400).send("El usuario ya existe en el sistema");
-            return;
-        }
-
-        // Encriptar password
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hash = await bcrypt.hash(body.user_password, salt);
-
-        // Guardar nuevo registro en la base de datos
-        const new_user_created = await User.create({
-            user_name: body.user_name,
-            user_email: body.user_email,
-            user_password: hash,
-            user_created_at: moment().format("YYYY-MM-DD hh:mm:ss"),
-            user_modify_at: moment().format("YYYY-MM-DD hh:mm:ss"),
-            user_status: "A"
-
-        })
-
-        // Respuesta
-        res.json({
-            user_name: new_user_created.user_name,
-            created_at: new_user_created.user_created_at
-        });
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
-//Login
-export const login = async (req, res, next) => {
-    try {
-
-        // Validar errores con express-validator
-        const errores = validationResult(req);
-        if (!errores.isEmpty()) {
-            res.status(400).json({ errores: errores.array() })
-            return;
-        }
-        const { body } = req;
-
-        // Verificar si el usuario existe
-        const user = await User.findOne({ where: { user_email: body.user_email } });
-        if (!user) {
-            res.status(400).json({ error: "El usuario no existe en la base de datos" })
-            return;
-        }
-        // Verificar que la contraseña sea correcta
-        const match = await bcrypt.compare(body.user_password, user.user_password);
-        if (!match) {
-            res.status(400).json({ error: "La contraseña es incorrecta" })
-            return;
-        }
-        // Se crea el token de seguridad
-        // Payload
-        const payload = { user_id: user.user_id }
-        const { sign } = jwt;
-        const token = sign(payload, process.env.TOKEN_SECRET, { expiresIn: (60000 * 30) })
-        console.log("token::::", token);
-
-        // Se crea la sesión del usuario
-        req.session.user_id = user.user_id;
-        req.session.loged = true;
-
-        // Se genera respuesta con el token de seguridad en el header
-        res.header("auth-token", token).json({
-            token: token,
-            user_id: user.user_id
-        });
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
-//Proteger las rutas que son parte de la API
-export const verify_token = (req, res, next) => {
-    const { verify } = jwt;
-    const token = req.header("auth-token")
-    if (!token) {
-        res.status(400).send("Acceso denegado");
-        next();
-    }
-    try {
-        const verified = verify(token, process.env.TOKEN_SECRECT);
-        req.user = verified;
-        next();
-    } catch (error) {
-        res.status(400).send("Token invalido");
-        next();
-    }
-}
-
-//Recargamos la vista de create user
-export const create_user_view = async (req, res, next) => {
-    try {
-        console.log("vista create")
-        res.render("editar-registro", {
-            base_url: process.env.BASE_URL,
-        })
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
-export const edit_user_view = async (req, res, next) => {
-    try {
-        //consultamos el usuario
-        console.log("ID: ", req.params.user_id);
-
-        const user_exist = await User.findOne({ where: { user_id: req.params.user_id } });
-        console.log("user_id: ", user_exist.user_id)
-        if (user_exist !== null) {
-            res.render("editar-registro", {
-                base_url: process.env.BASE_URL,
-                user: user_exist
-                // user: user_exist
-            })
-        }
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
-//Dashboard para mostrar usuarios con estatus A
-export const users_view = async (req, res, next) => {
-    try {
-        const users = await User.findAll({
-            where: { user_status: 'A' },
-        });
-
-        res.render("users", {
-            base_url: process.env.BASE_URL,
-            users: users,
-        })
-        /*
-        const users = await User.findAll({ where: { user_status: 'A' } });
-        res.render("users", {
-            base_url: process.env.BASE_URL,
-            users: users
-        })*/
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
-export const users_view_post = async (req, res, next) => {
-    try {
-        const searchTerm = req.body.searchTerm;
-        const users = await User.findAll({
-            where: {
-                user_status: 'A',
-                user_email: { [Op.like]: `%${searchTerm}%` },
-            },
-        });
-        res.json({ users });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error interno del servidor');
-    }
-};
