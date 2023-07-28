@@ -11,7 +11,7 @@
                     <p class="panel-heading mb-1">
                         Usuarios Registrados
                         <a class="button is-warning is-pulled-right is-small has-text-weight-bold"
-                            href="/users/user/nuevo">+ Nuevo Usuario</a>
+                            href="/users/create/new_user">+ Nuevo Usuario</a>
                     </p>
 
                     <!--Búsqueda-->
@@ -21,12 +21,18 @@
                                 <input class="input is-link" type="text" id="searchTerm"
                                     placeholder="Buscar por email" />
                                 <span class="icon is-left">
-                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    <i class="fas fa-envelope" aria-hidden="true"></i>
                                 </span>
                             </p>
                             <p class="control">
-                                <button class="button is-link ml-1" type="button" onclick=""
-                                    id="searchButton">Buscar</button>
+                                <button class="button is-warning ml-1" type="button" onclick=""
+                                    id="searchButton">
+                                    <span class="icon">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <span>Buscar</span>
+                                   
+                                </button>
                             </p>
                         </div>
                     </form>

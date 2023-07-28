@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import {} from "dotenv/config"
 import session from "express-session";
 
@@ -12,12 +13,14 @@ import { session_validation } from "./src/validators/session_validation.js";
 
 const app = express(); 
 app.use(cors());
+app.use(cookieParser());
 
 //Carpeta Pública
 app.use(express.static('./src/public'));
 
 app.use(express.urlencoded({extended: true})); //Habilitar lectura de datos de formularios
 app.use(express.json()); //Enviar diferentes respuetsas de tipo json - ayuda a responder en formato json
+
 
 //Conexión a la Base de Datos
 try{

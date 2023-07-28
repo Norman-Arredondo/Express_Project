@@ -118,7 +118,7 @@
 
                     <div class="field is-grouped is-grouped-right mt-5">
                         <div class="control">
-                            <a class="button is-danger is-outlined" href="/users/users">Cancelar</a>
+                            <a class="button is-danger is-outlined" href="/users/dashboard">Cancelar</a>
                         </div>
                         <div class="control">
                             <button class="button is-link is-outlined" type="button" id="send_btn">Editar</button>
@@ -135,9 +135,11 @@
                 <div class="box">
 
                     <div class="has-text-centered my-6">
-                        <p class="is-size-1">Se ha <span class="has-text-weight-bold">Editado</span>
-                            correctamente el usuario</p>
-                        <p class="is-size-3 has-text-weight-bold" style="color: rgb(25, 0, 255);" id="userCreated"> </p>
+                        <p class="is-size-1">Se ha <span class="has-text-weight-bold">Modificado</span> correctamente el
+                            usuario</p>
+                        <p class="is-size-3 has-text-weight-bold" style="color: rgb(25, 0, 255);">
+                            <%=user.user_name %>
+                        </p>
                     </div>
 
                     <div class="columns is-centered">

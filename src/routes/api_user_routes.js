@@ -3,7 +3,7 @@ import express from "express";
 import { new_user_validation,
      login_validation 
     } from "../validators/user_validations.js";
-import { login, buscador_dashboard_post, status_user_delete, edit_user_put} from "../controllers/user_controller.js";
+import { login, buscador_dashboard_post, status_user_delete, edit_user_put, create_new_user_post} from "../controllers/user_controller.js";
 
 const api_user_router = express.Router();
 
@@ -17,19 +17,10 @@ api_user_router.post('/', buscador_dashboard_post);
 api_user_router.delete('/:user_id', status_user_delete);
 
 // Editar Usuario
-api_user_router.put('/:user_id', edit_user_put);
+api_user_router.put('/:user_id', new_user_validation, edit_user_put);
 
-// Endpoint para Crear cuenta - Nuevo Usuraio
-//api_user_router.post('/', new_user_validation, new_user);
-//api_user_router.post('/', new_user_validation, form_new_user_post);
-
-
-
-// Editar Usuario
-//api_user_router.put('/:user_id', update_user);
-
-
-
+// Crear cuenta - Nuevo Usuraio
+api_user_router.post('/create', new_user_validation, create_new_user_post);
 
 
 export default api_user_router;

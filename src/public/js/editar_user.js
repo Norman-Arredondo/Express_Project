@@ -1,10 +1,10 @@
 const user_name_input = document.querySelector('#user_name_input');
-const  user_email_input = document.querySelector('#user_email_input');
+const user_email_input = document.querySelector('#user_email_input');
 const user_password_input = document.querySelector('#user_password_input');
 
 const editPasswordCheckbox = document.getElementById('edit_password_cb');//Checkbox para mostrar/ocultar contraseña
-const password_field = document.getElementById('password_field'); //Div con el input contraseña y checkbox
-const repeat_password_field = document.getElementById('repeat_password_field'); //Div con el input repetir contraseña y checkbox
+const password_field = document.getElementById('password_field'); //Div con los input contraseña, repetir contraseña y checkboxes
+
 
 const show_password_cb = document.querySelector("#show_password_cb");
 const show_password_cb2 = document.querySelector("#show_password_cb2");
@@ -38,10 +38,10 @@ const show_repeat_password = (e) => {
 const edit_password = (e) => {
     if (e.target.checked) {
         password_field.style.display = 'block';
-        repeat_password_field.style.display = 'block';
+       
     } else {
         password_field.style.display = 'none';
-        repeat_password_field.style.display = 'none';
+        
     }
 }
 
@@ -51,35 +51,44 @@ const showModal = () => {
 }
 
 const locationReplace = () => {
-    window.location.replace("http://localhost:3001/users/users");
+    window.location.replace("http://localhost:3001/users/dashboard");
 }
 
 const actualizar = async (e) => {
     
     e.preventDefault(); // Previene que se envíe el formulario de manera convencional
 
-    const user_id = id_input.value;
-    const user_name = document.getElementById('user_name_input').value;
-    const user_email = document.getElementById('user_email_input').value;
-    const user_password = document.getElementById('user_password_input').value;
+    const data = {};
 
-    const formData = new FormData();
-    formData.append('user_name', user_name);
-    formData.append('user_email', user_email);
-    formData.append('user_password', user_password);
+    if(id_input.value !== '') {
+        data.user_id = id_input.value
+    }
+    if(user_name_input.value.trim() !== '') {
+        data.user_name = user_name_input.value
+    }
+    if(user_email_input.value.trim() !== '') {
+        data.user_email = user_email_input.value
+    }
+    if(user_password_input.value.trim() !== '') {
+        data.user_password = user_password_input.value
+    }
+    
 
     try {
-        const response = await fetch(`http://localhost:3001/api/user/${user_id}`, {
+        const response = await fetch(`http://localhost:3001/api/user/${id_input.value}`, {
             method: 'PUT',
-            body: formData,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: new URLSearchParams(data),
         });
 
         const result = await response.json();
-        console.log('result: ', result);
+        console.log("result: ",result)
 
         const { mensaje } = result;
 
-        if (mensaje === 'Usuario modificado correctamente') {
+        if (mensaje === 'Usuario actualizado correctamente') {
             showModal();
         }
     } catch (error) {
@@ -87,11 +96,9 @@ const actualizar = async (e) => {
     }
 };
 
-
-// Cambiar el evento 'click' por 'change'
-editPasswordCheckbox.addEventListener('change', edit_password);
+editPasswordCheckbox.addEventListener('click', edit_password);
 
 show_password_cb.addEventListener("click", show_password);
 show_password_cb2.addEventListener("click", show_repeat_password);
 
-send_btn.addEventListener("click", actualizar)
+send_btn.addEventListener("click", actualizar);

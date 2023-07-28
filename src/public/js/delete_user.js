@@ -8,7 +8,7 @@ const showModal = () => {
 }
 
 const locationReplace = () => {
-    window.location.replace("http://localhost:3001/users/users");
+    window.location.replace("http://localhost:3001/users/dashboard");
 }
 
 const eliminar = async (e) => {

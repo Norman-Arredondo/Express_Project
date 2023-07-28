@@ -63,7 +63,8 @@ export const login = async (req, res, next) => {
         // Se genera respuesta con el token de seguridad en el header
         res.header("auth-token", token).json({
             token: token,
-            user_id: user.user_id
+            user_id: user.user_id,
+            user_name: user.user_name
         });
     } catch (error) {
         res.status(400).send(error);
@@ -71,14 +72,14 @@ export const login = async (req, res, next) => {
     }
 }
 
-//Dashboard View para mostrar usuarios con estatus A
+//Dashboard VIEW para mostrar usuarios con estatus A
 export const users_view = async (req, res, next) => {
     try {
         const users = await User.findAll({
             where: { user_status: 'A' },
         });
 
-        res.render("users", {
+        res.render("dashboard", {
             base_url: process.env.BASE_URL,
             users: users,
         })
@@ -109,7 +110,7 @@ export const buscador_dashboard_post = async (req, res, next) => {
     }
 }
 
-// Eliminar Usuario View
+// Eliminar Usuario VIEW
 export const delete_user_view = async (req, res, next) => {
     try {
 
@@ -148,10 +149,85 @@ export const status_user_delete = async (req, res, next) => {
     }
 }
 
+// Editar Usuario VIEW
+export const edit_user_view = async (req, res, next) => {
+    try {
 
+        const user_exist = await User.findOne({ where: { user_id: req.params.user_id } });
 
-// Crear Cuenta (POST)
-export const new_user = async (req, res, next) => {
+        if (user_exist !== null) {
+            res.render("editar_user_view", {
+                base_url: process.env.BASE_URL,
+                user: user_exist
+            });
+        }
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+// Actualizar/Editar Usuario (PUT)
+export const edit_user_put = async (req, res, next) => {
+    try {
+        // Obtiene el ID del usuario de los parámetros de la URL
+        const { user_id } = req.params;
+
+        // Obtiene los campos enviados en el cuerpo de la solicitud
+        const { user_name, user_email, user_password } = req.body;
+
+        // Busca el usuario en la base de datos utilizando el ID
+        const user = await User.findByPk(user_id);
+
+        // Verifica si el usuario existe
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Verifica si se proporcionó un valor para el campo "user_name" y lo actualiza en el objeto "user"
+        if (user_name) {
+            user.user_name = user_name;
+        }
+
+        // Verifica si se proporcionó un valor para el campo "user_email" y lo actualiza en el objeto "user"
+        if (user_email) {
+            user.user_email = user_email;
+        }
+
+        // Verifica si se proporcionó un valor para el campo "user_password" y lo actualiza en el objeto "user"
+        if (user_password) {
+            user.user_password = user_password;
+        }
+
+        // Guarda los cambios en la base de datos utilizando el método "update()" del modelo Sequelize
+        await user.update();
+
+        // Responde con un mensaje de éxito y el objeto "user" actualizado
+        res.json({
+            mensaje: 'Usuario actualizado correctamente',
+            usuario_actualizado: user,
+        });
+    } catch (error) {
+        // Si ocurre un error, se envía una respuesta con el código de estado 400 y el mensaje de error
+        res.status(400).send(error);
+        next();
+    }
+};
+
+// Formulario Crear Nuevo Usuario/Cuenta VIEW
+export const create_new_user_view= async (req, res, next) => {
+    try {
+        res.render("create_new_user_view", {
+            base_url: process.env.BASE_URL,
+        })
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
+// Crear Nuevo Usuario/Cuenta (POST)
+export const create_new_user_post = async (req, res, next) => {
     try {
         // Validar errores con express-validator
         const errores = validationResult(req);
@@ -181,91 +257,13 @@ export const new_user = async (req, res, next) => {
             user_created_at: moment().format("YYYY-MM-DD hh:mm:ss"),
             user_modify_at: moment().format("YYYY-MM-DD hh:mm:ss"),
             user_status: "A"
-
         })
 
         // Respuesta
         res.json({
-            user_name: new_user_created.user_name,
-            created_at: new_user_created.user_created_at
+            usuario_creado: new_user_created,
         });
     } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
-// Editar Usuario View
-export const edit_user_view = async (req, res, next) => {
-    try {
-
-        const user_exist = await User.findOne({ where: { user_id: req.params.user_id } });
-
-        if (user_exist !== null) {
-            res.render("editar_user_view", {
-                base_url: process.env.BASE_URL,
-                user: user_exist
-            });
-        }
-    } catch (error) {
-        res.status(400).send(error);
-        next();
-    }
-}
-
-// Actualizar/Editar Usuario (PUT)
-export const edit_user_put = async (req, res, next) => {
-    try {
-        // Validar errores con express-validator
-        const errores = validationResult(req);
-        const { body } = req;
-
-        // Objeto para almacenar los campos a actualizar
-        const user_update = {};
-
-        if (!errores.isEmpty()) {
-            res.status(400).json({ errores: errores.array() });
-            return;
-        }
-
-        // Verificar si se proporcionó un nuevo nombre de usuario
-        if (body.user_name !== undefined) {
-            user_update.user_name = body.user_name;
-        }
-
-        // Verificar si se proporcionó un nuevo correo electrónico
-        if (body.user_email !== undefined) {
-            user_update.user_email = body.user_email;
-        }
-
-        // Verificar si se proporcionó un nuevo password
-        if (body.user_password !== undefined) {
-            // Encriptar password
-            const saltRounds = 10;
-            const salt = await bcrypt.genSalt(saltRounds);
-            const hash = await bcrypt.hash(body.user_password, salt);
-
-            user_update.user_password = hash;
-        }
-
-        // Agregar la fecha de modificación
-        user_update.user_modify_at = moment().format("YYYY-MM-DD hh:mm:ss");
-
-        // Actualizar el usuario en la base de datos con solo con los campos proporcionados
-        const result = await User.update(user_update, {
-            where: {
-                user_id: body.user_id
-            }
-        });
-
-        console.log("actualizado: ", result);
-
-        // Respuesta indicando que el usuario ha sido actualizado
-        res.json({
-            respuesta: "actualizado",
-        });
-    } catch (error) {
-        // Si ocurre un error, se envía una respuesta con el código de estado 400 y el mensaje de error
         res.status(400).send(error);
         next();
     }
@@ -287,7 +285,6 @@ export const registro_view = async (req, res, next) => {
 
     })
 }
-
 export const registrar = async (req, res, next) => {
 
     try {
