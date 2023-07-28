@@ -40,7 +40,7 @@ const searchUsers = async () => {
             ${user.user_email}
           </p>
           <p class="control px-2">
-            <a class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt" href=""></a>
+            <a class="button is-small is-responsive is-warning is-outlined fas fa-pencil-alt" href="/users/edit/${user.user_id}"></a>
             <a class="button is-small is-responsive is-danger is-outlined fas fa-trash-alt" href="/users/delete/${user.user_id}"></a>
           </p>
         </div>
