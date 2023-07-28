@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("templates/header") %>
+    <style>
+        /* Estilo para ocultar el modal por defecto */
+        #myModal {
+            display: none;
+        }
+
+        /* Estilo para mostrar el modal */
+        #myModal.is-active {
+            display: flex;
+        }
+    </style>
+
+    <body>
+        <div class="has-text-centered my-6" id="errors">
+            <p class="is-size-1">¿Está seguro que desea <span class="has-text-weight-bold"
+                    style="color: red;">Eliminar</span><span> al usuario</span>
+            </p>
+            <p class="is-size-3 has-text-weight-bold" style="color: rgb(25, 0, 255);">
+                <%=user.user_name %><span class="has-text-weight-normal is-size-1" style="color:black"> ?</span>
+            </p>
+        </div>
+
+
+
+        <div class="columns is-centered mt-5">
+            <div class="column is-one-quarter has-background-white py-4 px-4 box is-rounded">
+                <div class="mb-3">
+                    <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
+                        ID</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre"
+                            value="<%=user.user_id  %>" id="id_input" disabled />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-key"></i>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="mb-3">
+                    <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
+                        Nombre</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input type="text" class="input is-fullwidth has-padding-small mt-1" placeholder="Nombre"
+                            value="<%=user.user_name  %>" id="userName_input" disabled />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="mb-3">
+                    <label for="" class="is-size-7 is-uppercase has-text-grey-darker has-text-weight-bold">
+                        Email</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input type="email" class="input is-fullwidth has-padding-small mt-1" placeholder="Email"
+                            value="<%=user.user_email  %>" id="email_input" disabled />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field is-grouped is-grouped-right mt-5">
+                    <div class="control">
+                        <a class="button is-danger is-outlined" href="/users/dashboard">Cancelar</a>
+                    </div>
+                    <div class="control">
+                        <button class="button is-warning" id="send_btn">Eliminar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+
+                    <div class="has-text-centered my-6">
+                        <p class="is-size-1">Se ha <span class="has-text-weight-bold">Eliminado</span> correctamente el
+                            usuario</p>
+                        <p class="is-size-3 has-text-weight-bold" style="color: rgb(25, 0, 255);">
+                            <%=user.user_name %>
+                        </p>
+                    </div>
+
+                    <div class="columns is-centered">
+                        <div class="column is-one-third">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div class="is-flex justify-center">
+                                            <a class="button is-primary is-light is-fullwidth"
+                                                onclick="locationReplace()">Aceptar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="<%= base_url %>js/delete_user.js"></script>
+
+    </body>
+
+</html>
