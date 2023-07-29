@@ -235,6 +235,20 @@ const enviar = async (e) => {
         const result = await response.json();
         console.log("result: ", result)
 
+        // Si hay errores en la respuesta del servidor
+        if (result.error) {
+            // Muestra el mensaje de error en la página
+            email_message.innerHTML = result.error;
+            email_message.classList.add("has-text-weight-bold");
+            email_message.classList.add("is-danger");
+
+            setTimeout(() => {
+                email_message.classList.remove("has-text-weight-bold");
+            }, 1000);
+
+            return;
+        }
+
         const { errores } = result;
 
         if (errores) {
@@ -264,10 +278,10 @@ const enviar = async (e) => {
 
         } else {
 
-            alert("Usuario registrado correctamente")
+            //alert("Usuario registrado correctamente")
             console.log(result)
-            //userCreated.innerHTML = user_name_input.value;
-            //showModal();
+            userCreated.innerHTML = user_name_input.value;
+            showModal();
         }
 
     } catch (error) {
