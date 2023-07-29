@@ -46,6 +46,21 @@ const searchUsers = async () => {
         </div>
       `;
     });
+
+    // Obtener los enlaces de paginación
+    const paginationLinks = document.querySelectorAll('.pagination-link');
+
+    // Función para manejar la paginación
+    const handlePagination = (e) => {
+      e.preventDefault();
+      const page = e.target.textContent;
+      searchUsers(page); // Llamar a la función de búsqueda con el número de página
+    };
+
+    // Asignar la función handlePagination a los enlaces de paginación
+    paginationLinks.forEach(link => {
+      link.addEventListener('click', handlePagination);
+    });
   } catch (error) {
     console.error(error);
     alert('Error al realizar la búsqueda');

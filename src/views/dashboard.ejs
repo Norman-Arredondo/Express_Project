@@ -72,8 +72,30 @@
                             </div>
                             <% });%>
                     </div>
+
                 </article>
+
+               
+            <div class="pagination is-rounded mt-4" role="navigation" aria-label="pagination" style="justify-content: center;">
+                <nav class="pagination is-centered mt-2 mb-6">
+                    <% if (currentPage > 1) { %>
+                    <a href="?page=<%= currentPage - 1 %>" class="pagination-previous">Anterior</a>
+                    <% } %>
+                    <% if (currentPage < totalPages) { %>
+                    <a href="?page=<%= currentPage + 1 %>" class="pagination-next">Siguiente</a>
+                    <% } %>
+                    <ul class="pagination-list">
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li>
+                            <a href="?page=<%= i %>" class="pagination-link <%= i === currentPage ? 'is-current' : '' %>"><%= i %></a>
+                        </li>
+                        <% } %>
+                    </ul>
+                    
+                </nav>
             </div>
+               
+        </div>
 
 
 
