@@ -72,19 +72,63 @@ export const login = async (req, res, next) => {
     }
 }
 
+export const logout = (req, res, next) => {
+    try {
+        if (req.session.loged) {
+
+            // Eliminar la sesión del usuario
+            req.session.destroy();
+
+            const logout = {
+                respuesta: "Sesión cerrada exitosamente"
+            }
+            res.json({ logout });
+
+        } else {
+            res.status(500).json({ error: "Error al cerrar sesión" });
+        }
+    } catch (error) {
+        res.status(400).send(error);
+        next();
+    }
+}
+
 //Dashboard VIEW para mostrar usuarios con estatus A
 export const users_view = async (req, res, next) => {
     try {
-        const users = await User.findAll({
+        // Obtener el número de página actual desde la consulta (query) de la URL
+        const { page } = req.query;
+
+        // Establecer la cantidad de usuarios a mostrar por página
+        const perPage = 10;
+
+        // Calcular el número de página actual o usar 1 si no está presente
+        const currentPage = page ? parseInt(page) : 1;
+
+        // Calcular el offset (desplazamiento) para la consulta Sequelize, 
+        // esto determina qué registros mostrar en la página actual
+        const offset = (currentPage - 1) * perPage;
+
+        // Consultar a la base de datos para obtener los usuarios con el estatus 'A'
+        // y limitar los resultados a la cantidad de usuarios por página con el offset
+        const users = await User.findAndCountAll({
             where: { user_status: 'A' },
+            limit: perPage,
+            offset: offset,
         });
 
+        // Calcular el número total de páginas para la paginación
+        const totalPages = Math.ceil(users.count / perPage);
+
+        // Renderizar la vista "dashboard" y pasar los usuarios, el número de páginas y la página actual a la vista
         res.render("dashboard", {
             base_url: process.env.BASE_URL,
-            users: users,
-        })
-
+            users: users.rows,
+            totalPages: totalPages,
+            currentPage: currentPage,
+        });
     } catch (error) {
+        // En caso de error, enviar una respuesta con el estado 400 y el error
         res.status(400).send(error);
         next();
     }
@@ -215,7 +259,7 @@ export const edit_user_put = async (req, res, next) => {
 };
 
 // Formulario Crear Nuevo Usuario/Cuenta VIEW
-export const create_new_user_view= async (req, res, next) => {
+export const create_new_user_view = async (req, res, next) => {
     try {
         res.render("create_new_user_view", {
             base_url: process.env.BASE_URL,
@@ -237,10 +281,12 @@ export const create_new_user_post = async (req, res, next) => {
         }
 
         const { body } = req;
+        
         //Validar que no exista el usuario previamente
-        const user_exist = await User.findOne({ where: { user_name: body.user_name } });
+        const user_exist = await User.findOne({ where: { user_email: body.user_email } });
         if (user_exist !== null) {
-            res.status(400).send("El usuario ya existe en el sistema");
+            // Si el usuario ya existe, envía un objeto JSON con la propiedad "error"
+            res.status(400).json({ error: "El usuario ya existe en el sistema" });
             return;
         }
 
@@ -273,9 +319,7 @@ export const create_new_user_post = async (req, res, next) => {
 
 
 
-
-
-
+// Crear cuenta ---CORREGIR---
 export const registro_view = async (req, res, next) => {
     res.render('registro', {
         base_url: process.env.BASE_URL,
