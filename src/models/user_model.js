@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import bcrypt from 'bcrypt';
+
 import db from "../config/db.js";
 
 //Nombre del modelo en mayúsculas , db.define(nombre de la tabla)
@@ -28,15 +28,15 @@ export const User = db.define('user', {
         type: Sequelize.STRING
     }
 }, 
-{
-    hooks: {
-        beforeCreate: async function(datos) {
-            const salt = await bcrypt.genSalt(10)
-            datos.user_password = await bcrypt.hash(datos.user_password, salt);
-        }
-    },
-    freezeTableName: true
-},
+//{
+    //hooks: {
+      //  beforeCreate: async function(datos) {
+        //    const salt = await bcrypt.genSalt(10)
+          //  datos.user_password = await bcrypt.hash(datos.user_password, salt);
+        //}
+    //},
+    //freezeTableName: true
+//},
     { freezeTableName: true },
     
 );
