@@ -19,7 +19,10 @@ user_routes.get('/edit/:user_id', session_validation, edit_user_view);
 // Vista para Formulario crear Nuevo Usuario
 user_routes.get('/create/new_user', session_validation, create_new_user_view);
 
-//Vista Nuevo Usuario
+
+
+
+// Crear cuenta ---CORREGIR---
 user_routes.get("/registro", registro_view);
 user_routes.post("/registro", registrar);
 

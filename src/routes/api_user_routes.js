@@ -3,7 +3,7 @@ import express from "express";
 import { new_user_validation,
      login_validation 
     } from "../validators/user_validations.js";
-import { login, buscador_dashboard_post, status_user_delete, edit_user_put, create_new_user_post} from "../controllers/user_controller.js";
+import { login, buscador_dashboard_post, status_user_delete, edit_user_put, create_new_user_post, logout} from "../controllers/user_controller.js";
 
 const api_user_router = express.Router();
 
@@ -21,6 +21,9 @@ api_user_router.put('/:user_id', new_user_validation, edit_user_put);
 
 // Crear cuenta - Nuevo Usuraio
 api_user_router.post('/create', new_user_validation, create_new_user_post);
+
+// Ruta para cerrar sesión
+api_user_router.post('/logout', logout);
 
 
 export default api_user_router;

@@ -14,8 +14,6 @@ export const registrar_validation = [
     
 ];
 
-
-
 export const login_validation = [
     //Validaciones para campos para post
 
