@@ -102,6 +102,8 @@ const enviar = async(e) => {
             if(token){
                 email_input.classList.add("is-success");
                 password_input.classList.add("is-success");
+
+                localStorage.setItem("usuario",JSON.stringify(result));
                 setTimeout(() => {
                     // alert("usuario logueado")
                     window.location.replace("http://localhost:3001/");
